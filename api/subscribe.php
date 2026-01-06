@@ -1,7 +1,25 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+// Security Headers
+header("X-Content-Type-Options: nosniff");
+header("X-Frame-Options: DENY");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
+
+// CORS Configuration
+$allowedOrigins = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500',
+    'https://dysadapt.com',
+    'null' // Allow direct file access
+];
+
+$origin = $_SERVER['HTTP_ORIGIN'] ?? 'null';
+
+if (in_array($origin, $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: $origin");
+}
+header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 // Handle preflight OPTIONS request
@@ -36,10 +54,11 @@ try {
 $data = json_decode(file_get_contents("php://input"));
 
 if (!empty($data->email) && isset($data->consent)) {
-    $email = filter_var($data->email, FILTER_SANITIZE_EMAIL);
+    $email = trim(strtolower($data->email)); // Sanitize
     $consent = $data->consent ? 1 : 0;
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    // Strict Email Validation Regex
+    if (!preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $email)) {
         http_response_code(400);
         echo json_encode(["error" => "Email invalide."]);
         exit();
