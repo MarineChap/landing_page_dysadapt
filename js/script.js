@@ -13,10 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const consent = consentCheckbox.checked;
 
             try {
-                const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-                const API_BASE_URL = isProduction ? 'https://www.api1.fguyot.com' : 'http://localhost:3000';
-
-                const response = await fetch(`${API_BASE_URL}/api/subscribe`, {
+                // PHP Backend (Same domain)
+                const response = await fetch('api/subscribe.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Désabonnement - DysAdapt</title>
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .unsubscribe-container {
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .unsubscribe-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">
+                DysAdapt
+            </a>
+        </nav>
+    </header>
+
+    <main class="unsubscribe-container">
+        <h1>Désabonnement</h1>
+        <p>Nous sommes désolés de vous voir partir. Entrez votre adresse email pour vous désabonner de la newsletter.
+        </p>
+
+        <form id="unsubscribeForm" class="unsubscribe-form">
+            <div class="form-group">
+                <input type="email" id="email" placeholder="votre@email.com" required class="form-input">
+            </div>
+            <button type="submit" class="btn btn--primary">Se désabonner</button>
+        </form>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__content">
+            <p>&copy; 2024 DysAdapt. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Pre-fill email from URL if present (?email=...)
+        const urlParams = new URLSearchParams(window.location.search);
+        const emailParam = urlParams.get('email');
+        if (emailParam) {
+            document.getElementById('email').value = emailParam;
+        }
+
+        document.getElementById('unsubscribeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+
+            if (!confirm('Êtes-vous sûr de vouloir vous désabonner ?')) return;
+
+            try {
+                const response = await fetch('api/unsubscribe.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Vous avez été désabonné avec succès.');
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Erreur : ' + (data.error || 'Une erreur est survenue.'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Erreur de connexion.');
+            }
+        });
+    </script>
+</body>
+
+</html>
