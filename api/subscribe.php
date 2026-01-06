@@ -10,6 +10,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
+// Load PHPMailer
+require_once 'PHPMailer/Exception.php';
+require_once 'PHPMailer/PHPMailer.php';
+require_once 'PHPMailer/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 // Database Credentials
 require_once 'db_config.php';
 
@@ -57,8 +66,51 @@ if (!empty($data->email) && isset($data->consent)) {
         $stmt->bindParam(':consent', $consent);
 
         if ($stmt->execute()) {
+            // Send Welcome Email
+            $mail = new PHPMailer(true);
+
+            try {
+                // Server settings
+                $mail->isSMTP();
+                $mail->Host       = $smtp_host ?? 'smtp.hostinger.com';
+                $mail->SMTPAuth   = true;
+                $mail->Username   = $smtp_username ?? 'contact@dysapp.com';
+                $mail->Password   = $smtp_password ?? '';
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // Enable implicit TLS encryption
+                $mail->Port       = $smtp_port ?? 465;
+
+                // Recipients
+                $mail->setFrom($smtp_username ?? 'contact@dysapp.com', 'DysAdapt');
+                $mail->addAddress($email);
+
+                // Content
+                $mail->isHTML(true);
+                $mail->CharSet = 'UTF-8';
+                $mail->Subject = 'Bienvenue dans la communauté DysAdapt !';
+                $mail->Body    = "
+                <html>
+                <head>
+                    <title>Bienvenue chez DysAdapt</title>
+                </head>
+                <body>
+                    <h1>Merci pour votre inscription !</h1>
+                    <p>Nous sommes ravis de vous compter parmi nous.</p>
+                    <p>Vous recevrez bientôt nos actualités et astuces pour l'adaptation scolaire.</p>
+                    <br>
+                    <p>L'équipe DysAdapt</p>
+                    <hr>
+                    <small><a href='https://dysapp.com/unsubscribe.html?email=" . urlencode($email) . "'>Se désabonner</a></small>
+                </body>
+                </html>";
+
+                $mail->send();
+            } catch (Exception $e) {
+                // Log error but don't fail the subscription
+                error_log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+            }
+
             http_response_code(201);
-            echo json_encode(["message" => "Inscription réussie !"]);
+            echo json_encode(["message" => "Inscription réussie ! Un email de confirmation a été envoyé."]);
         } else {
             http_response_code(503);
             echo json_encode(["error" => "Impossible d'enregistrer l'utilisateur."]);
