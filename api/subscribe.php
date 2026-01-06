@@ -87,21 +87,13 @@ if (!empty($data->email) && isset($data->consent)) {
                 $mail->isHTML(true);
                 $mail->CharSet = 'UTF-8';
                 $mail->Subject = 'Bienvenue dans la communauté DysAdapt !';
-                $mail->Body    = "
-                <html>
-                <head>
-                    <title>Bienvenue chez DysAdapt</title>
-                </head>
-                <body>
-                    <h1>Merci pour votre inscription !</h1>
-                    <p>Nous sommes ravis de vous compter parmi nous.</p>
-                    <p>Vous recevrez bientôt nos actualités et astuces pour l'adaptation scolaire.</p>
-                    <br>
-                    <p>L'équipe DysAdapt</p>
-                    <hr>
-                    <small><a href='https://dysadapt.com/unsubscribe.html?email=" . urlencode($email) . "'>Se désabonner</a></small>
-                </body>
-                </html>";
+
+                // Load HTML template
+                $template = file_get_contents('welcome_email.html');
+                
+                // Replace placeholders
+                $unsubscribeLink = 'https://dysadapt.com/unsubscribe.html?email=' . urlencode($email);
+                $mail->Body = str_replace('{{unsubscribe_link}}', $unsubscribeLink, $template);
 
                 $mail->send();
             } catch (Exception $e) {
