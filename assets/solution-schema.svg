@@ -1,0 +1,107 @@
+<svg width="800" height="400" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background -->
+    <rect width="800" height="400" fill="#ffffff" />
+
+    <!-- LEFT: BEFORE (Surchargé) -->
+    <g transform="translate(50, 50)">
+        <text x="150" y="-20" font-family="'Open Sans', sans-serif" fill="#e74c3c" font-weight="bold" font-size="18" text-anchor="middle">AVANT</text>
+
+        
+        <!-- Paper Sheet -->
+        <rect x="0" y="20" width="300" height="330" fill="#f8f9fa" stroke="#cbd5e1" stroke-width="2" rx="5"/>
+        
+        <!-- Overstimulating Frames (The "Colored Frames" request) -->
+        <!-- Frame 1: Red background block -->
+        <rect x="15" y="50" width="270" height="60" fill="#ffebee" stroke="#ef5350" stroke-width="2" rx="0"/>
+        
+        <!-- Frame 2: Blue border block -->
+        <rect x="15" y="120" width="130" height="100" fill="#e3f2fd" stroke="#42a5f5" stroke-width="2" rx="0"/>
+        
+        <!-- Frame 3: Green border block -->
+        <rect x="155" y="120" width="130" height="100" fill="#e8f5e9" stroke="#66bb6a" stroke-width="2" rx="0"/>
+
+        <!-- Frame 4: Yellow block at bottom -->
+        <rect x="15" y="230" width="270" height="100" fill="#fffde7" stroke="#ffee58" stroke-width="2" rx="0"/>
+
+
+        <!-- Cramped Math Problems inside frames -->
+        <g font-family="'Times New Roman', serif" font-size="14" fill="#333">
+            <!-- Frame 1 content -->
+            <text x="25" y="75">1) 12 + 4 = __</text>
+            <text x="120" y="75">2) 15 + 3 = __</text>
+            <text x="215" y="75">3) 9 + 8 = __</text>
+            <text x="25" y="95" font-size="12" fill="#d32f2f">Attention aux retenues !</text>
+
+            <!-- Frame 2 content -->
+            <text x="25" y="145">4) 24 + 10 = __</text>
+            <text x="25" y="165">5) 30 + 5 = __</text>
+            <text x="25" y="185">6) 13 + 13 = __</text>
+            <text x="25" y="205">7) 7 + 6 = __</text>
+
+            <!-- Frame 3 content -->
+            <text x="165" y="145">8) 124 + 2 = __</text>
+            <text x="165" y="165">9) 56 + 10 = __</text>
+            <text x="165" y="185">10) 90 + 9 = __</text>
+            <text x="165" y="205">11) 40 + 8 = __</text>
+
+            <!-- Frame 4 content -->
+            <text x="25" y="255">12) 144 + 23 = <tspan dx="5">__</tspan></text>
+            <text x="155" y="255">13) 56 + 12 = <tspan dx="5">__</tspan></text>
+            
+            <text x="25" y="280">14) 200 + 50 = <tspan dx="5">__</tspan></text>
+            <text x="155" y="280">15) 33 + 77 = <tspan dx="5">__</tspan></text>
+
+            <text x="25" y="305">16) 19 + 2 = <tspan dx="5">__</tspan></text>
+            <text x="155" y="305">17) 8 + 8 = <tspan dx="5">__</tspan></text>
+        </g>
+    </g>
+
+    <!-- ARROW: TRANSFORMATION -->
+    <g transform="translate(370, 180)">
+       <path d="M0 20 L40 20 L40 0 L80 30 L40 60 L40 40 L0 40 Z" fill="#2D6A4F"/>
+       <text x="40" y="-10" font-family="'Open Sans', sans-serif" font-size="12" fill="#2D6A4F" text-anchor="middle" font-weight="bold">DysAdapt</text>
+    </g>
+
+    <!-- RIGHT: AFTER (Adapté) -->
+    <g transform="translate(470, 50)">
+        <text x="150" y="-20" font-family="'Open Sans', sans-serif" fill="#2D6A4F" font-weight="bold" font-size="18" text-anchor="middle">APRÈS</text>
+
+
+        <!-- Tablet / Clean Page -->
+        <rect x="0" y="20" width="300" height="330" fill="#ffffff" stroke="#2D6A4F" stroke-width="3" rx="15"/>
+        
+        <!-- UI Header -->
+        <rect x="2" y="22" width="296" height="40" fill="#D8F3DC" rx="12" />
+        <rect x="2" y="50" width="296" height="15" fill="#D8F3DC" /> 
+        
+        <!-- Clear Content -->
+        <g font-family="'Open Sans', sans-serif" fill="#1F2937">
+            <!-- Clear Instruction -->
+            <text x="20" y="90" font-size="16" font-weight="bold" fill="#2D6A4F">Exercice 1 : Additions</text>
+            
+            <!-- Problem 1: Large, Spaced, Input box -->
+            <g transform="translate(20, 120)">
+                <text x="0" y="25" font-size="24">12 + 4 =</text>
+                <rect x="100" y="0" width="60" height="35" rx="5" fill="#F3F4F6" stroke="#2D6A4F" stroke-width="2"/>
+            </g>
+
+            <!-- Problem 2 -->
+            <g transform="translate(20, 180)">
+                <text x="0" y="25" font-size="24">15 + 3 =</text>
+                <rect x="100" y="0" width="60" height="35" rx="5" fill="#F3F4F6" stroke="#cbd5e1" stroke-width="1"/>
+            </g>
+
+            <!-- Problem 3 -->
+            <g transform="translate(20, 240)">
+                <text x="0" y="25" font-size="24">9 + 8 =</text>
+                <rect x="100" y="0" width="60" height="35" rx="5" fill="#F3F4F6" stroke="#cbd5e1" stroke-width="1"/>
+            </g>
+        </g>
+
+        <!-- Audio Tool Icon (Moved to Header) -->
+        <g transform="translate(265, 25) scale(1.2)" fill="#2D6A4F">
+             <!-- Simple Speaker Icon -->
+             <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </g>
+    </g>
+</svg>
