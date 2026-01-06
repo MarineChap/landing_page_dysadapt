@@ -10,7 +10,7 @@ $password = 'your_password';
 
 // SMTP Credentials
 $smtp_host = 'smtp.hostinger.com'; // or your provider
-$smtp_username = 'contact@dysapp.com';
+$smtp_username = 'contact@dysadapt.com';
 $smtp_password = 'your_email_password';
 $smtp_port = 465; // or 587
 ?>

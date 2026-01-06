@@ -74,13 +74,13 @@ if (!empty($data->email) && isset($data->consent)) {
                 $mail->isSMTP();
                 $mail->Host       = $smtp_host ?? 'smtp.hostinger.com';
                 $mail->SMTPAuth   = true;
-                $mail->Username   = $smtp_username ?? 'contact@dysapp.com';
+                $mail->Username   = $smtp_username ?? 'contact@dysadapt.com';
                 $mail->Password   = $smtp_password ?? '';
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // Enable implicit TLS encryption
                 $mail->Port       = $smtp_port ?? 465;
 
                 // Recipients
-                $mail->setFrom($smtp_username ?? 'contact@dysapp.com', 'DysAdapt');
+                $mail->setFrom($smtp_username ?? 'contact@dysadapt.com', 'DysAdapt');
                 $mail->addAddress($email);
 
                 // Content
@@ -99,7 +99,7 @@ if (!empty($data->email) && isset($data->consent)) {
                     <br>
                     <p>L'équipe DysAdapt</p>
                     <hr>
-                    <small><a href='https://dysapp.com/unsubscribe.html?email=" . urlencode($email) . "'>Se désabonner</a></small>
+                    <small><a href='https://dysadapt.com/unsubscribe.html?email=" . urlencode($email) . "'>Se désabonner</a></small>
                 </body>
                 </html>";
 
