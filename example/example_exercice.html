@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maths Dys - Version Finale Autonome</title>
+    <style>
+        /* --- STYLE POUR L'ÉCRAN --- */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+            background-color: #f4f7f9;
+            padding: 20px;
+            line-height: 1.8;
+            font-size: 1.5rem;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            color: white;
+        }
+
+        .btn-reset {
+            background-color: #e74c3c;
+        }
+
+        .btn-print {
+            background-color: #8e44ad;
+        }
+
+        .exercice-block {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 3px solid #3498db;
+            overflow: hidden;
+        }
+
+        .exercice-header {
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .exercice-content {
+            padding: 25px;
+            display: none;
+        }
+
+        .exercice-content.active {
+            display: block;
+        }
+
+        .s1 {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        /* Syllabe 1 */
+        .s2 {
+            color: #000000;
+            font-weight: bold;
+        }
+
+        /* Syllabe 2 */
+
+        .question-container {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-left: 8px solid #3498db;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+
+        .btn-audio {
+            background-color: #f39c12;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .operation-area {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            background: #fffcf0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            align-items: flex-start;
+        }
+
+        .grid-container {
+            background: #fff;
+            border: 2px solid #333;
+            padding: 10px;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .digit {
+            width: 50px;
+            height: 55px;
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: bold;
+            border: 2px solid #3498db;
+        }
+
+        .line-result {
+            border-top: 4px solid #333;
+            padding-top: 10px;
+        }
+
+        .btn-add {
+            background: #27ae60;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        input[type="text"].full-width {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 1.3rem;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Cahier de Mathématiques</h1>
+        <div id="exercises-list"></div>
+    </div>
+
+    <script>
+        const problemes = [
+            { id: 1, titre: "Exercice 1 : Les billes de Léo", texte: "Léo a 25 billes. Son ami lui en donne 18 de plus. Combien de billes Léo a-t-il maintenant ?", syll: "Léo a 25 billes. Son ami lui en donne 18 de plus. Combien de billes Léo a-t-il maintenant ?", aPose: true },
+            { id: 2, titre: "Exercice 2 : Les pommes du marchand", texte: "Dans la caisse du marchand, il y a 54 pommes. Il en vend 21 pendant la matinée. Combien en reste-t-il ?", syll: "Dans la caisse du marchand, il y a 54 pommes. Il en vend 21 pendant la matinée. Combien en reste-t-il ?", aPose: true },
+            { id: 3, titre: "Exercice 3 : Les gâteaux de Maman", texte: "Maman achète 3 paquets de 10 gâteaux pour le goûter. Combien de gâteaux y a-t-il en tout ?", syll: "Maman achète 3 paquets de 10 gâteaux pour le goûter. Combien de gâteaux y a-t-il en tout ?", aPose: true },
+            { id: 4, titre: "Exercice 4 : Les images de Julie", texte: "Julie a 42 images dans son album. Elle en gagne 19 à la récréation. Combien en a-t-elle au total ?", syll: "Julie a 42 images dans son album. Elle en gagne 19 à la récréation. Combien en a-t-elle au total ?", aPose: true },
+            { id: 5, titre: "Exercice 5 : Les fleurs du jardinier", texte: "Le jardinier a planté 36 tulipes rouges et 25 tulipes jaunes. Combien de fleurs y a-t-il dans le jardin ?", syll: "Le jardinier a 120 fleurs. Il en vend 45 à la vente. Combien en reste-t-il ?", aPose: true },
+            { id: 6, titre: "Exercice 6 : Les passagers du bus", texte: "Dans un bus, il y a 48 passagers. Au premier arrêt, 15 personnes descendent. Combien reste-t-il de passagers ?", syll: "Dans un bus, il y a 48 passagers. Au premier arrêt, 15 personnes descendent. Combien reste-t-il de passagers ?", aPose: true },
+        ];
+
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(text);
+            const voices = window.speechSynthesis.getVoices();
+            utter.voice = voices.find(v => v.lang.includes('fr') && v.name.includes('Google')) || voices.find(v => v.lang.includes('fr')) || voices[0];
+            utter.rate = 0.85;
+            window.speechSynthesis.speak(utter);
+        }
+
+        const list = document.getElementById('exercises-list');
+        list.innerHTML = problemes.map(ex => `
+        <div class="exercice-block">
+            <div class="exercice-header" onclick="this.nextElementSibling.classList.toggle('active')">${ex.titre}</div>
+            <div class="exercice-content">
+                <button class="btn-audio" onclick="speak('${ex.texte.replace(/'/g, "\\'")}')">🔊 Écouter l'énoncé</button>
+                <div class="question-container">${ex.texte}</div>
+                <div class="field-group"><label>Calcul :</label><input type="text" class="full-width save-input" data-key="calc-${ex.id}"></div>
+                ${ex.aPose ? `<div class="operation-area">
+                    <div class="grid-container"><div class="rows-container">
+                        <div class="row"><div style="width:50px"></div><input type="text" class="digit save-input" data-key="grid-${ex.id}-1-1" maxlength="1"><input type="text" class="digit save-input" data-key="grid-${ex.id}-1-2" maxlength="1"><input type="text" class="digit save-input" data-key="grid-${ex.id}-1-3" maxlength="1"></div>
+                        <div class="row"><select class="save-input" data-key="op-${ex.id}" style="font-size:1.2rem;width:50px"><option>+</option><option>-</option></select><input type="text" class="digit save-input" data-key="grid-${ex.id}-2-1" maxlength="1"><input type="text" class="digit save-input" data-key="grid-${ex.id}-2-2" maxlength="1"><input type="text" class="digit save-input" data-key="grid-${ex.id}-2-3" maxlength="1"></div>
+                    </div><div class="line-result"><div class="row"><div style="width:50px"></div><input type="text" class="digit save-input" data-key="res-${ex.id}-1" maxlength="1"><input type="text" class="digit save-input" data-key="res-${ex.id}-2" maxlength="1"><input type="text" class="digit save-input" data-key="res-${ex.id}-3" maxlength="1"></div></div></div>
+                    <button class="btn-add" onclick="addNewRow(this, ${ex.id})">+</button>
+                </div>` : ''}
+                <div class="field-group"><label>Réponse :</label><input type="text" class="full-width save-input" data-key="ans-${ex.id}"></div>
+            </div>
+        </div>
+    `).join('');
+
+        function addNewRow(btn, exId) {
+            const container = btn.previousElementSibling.querySelector('.rows-container');
+            const rowCount = container.children.length + 1;
+            const newRow = container.children[1].cloneNode(true);
+            newRow.querySelectorAll('.save-input').forEach((input, i) => {
+                input.value = "";
+                input.dataset.key = `grid-${exId}-${rowCount}-${i}`;
+            });
+            container.appendChild(newRow);
+        }
+
+        // SAUVEGARDE AUTO
+        document.addEventListener('input', (e) => {
+            if (e.target.classList.contains('save-input')) {
+                localStorage.setItem(e.target.dataset.key, e.target.value);
+            }
+        });
+
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.save-input').forEach(input => {
+                const savedValue = localStorage.getItem(input.dataset.key);
+                if (savedValue !== null) input.value = savedValue;
+            });
+        });
+
+    </script>
+</body>
+
+</html>
