@@ -24,31 +24,6 @@
             margin: auto;
         }
 
-        .toolbar {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: bold;
-            color: white;
-        }
-
-        .btn-reset {
-            background-color: #e74c3c;
-        }
-
-        .btn-print {
-            background-color: #8e44ad;
-        }
-
         .exercice-block {
             background: white;
             border-radius: 12px;
@@ -63,6 +38,17 @@
             padding: 20px;
             cursor: pointer;
             font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Discrete Arrow */
+        .exercice-header::after {
+            content: '▶';
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            opacity: 0.8;
         }
 
         .exercice-content {
@@ -70,22 +56,15 @@
             display: none;
         }
 
+        /* State management */
         .exercice-content.active {
             display: block;
         }
 
-        .s1 {
-            color: #e74c3c;
-            font-weight: bold;
+        /* Rotate arrow when the content is active */
+        .exercice-block:has(.exercice-content.active) .exercice-header::after {
+            transform: rotate(90deg);
         }
-
-        /* Syllabe 1 */
-        .s2 {
-            color: #000000;
-            font-weight: bold;
-        }
-
-        /* Syllabe 2 */
 
         .question-container {
             background-color: #f8f9fa;
@@ -103,6 +82,8 @@
             border-radius: 8px;
             cursor: pointer;
             margin-bottom: 15px;
+            font-family: inherit;
+            font-weight: bold;
         }
 
         .operation-area {
@@ -136,7 +117,6 @@
             font-size: 1.6rem;
             font-weight: bold;
             border: 2px solid #52B788;
-            ;
         }
 
         .line-result {
@@ -180,12 +160,12 @@
 
     <script>
         const problemes = [
-            { id: 1, titre: "Exercice 1 : Les billes de Léo", texte: "Léo a 25 billes. Son ami lui en donne 18 de plus. Combien de billes Léo a-t-il maintenant ?", syll: "Léo a 25 billes. Son ami lui en donne 18 de plus. Combien de billes Léo a-t-il maintenant ?", aPose: true },
-            { id: 2, titre: "Exercice 2 : Les pommes du marchand", texte: "Dans la caisse du marchand, il y a 54 pommes. Il en vend 21 pendant la matinée. Combien en reste-t-il ?", syll: "Dans la caisse du marchand, il y a 54 pommes. Il en vend 21 pendant la matinée. Combien en reste-t-il ?", aPose: true },
-            { id: 3, titre: "Exercice 3 : Les gâteaux de Maman", texte: "Maman achète 3 paquets de 10 gâteaux pour le goûter. Combien de gâteaux y a-t-il en tout ?", syll: "Maman achète 3 paquets de 10 gâteaux pour le goûter. Combien de gâteaux y a-t-il en tout ?", aPose: true },
-            { id: 4, titre: "Exercice 4 : Les images de Julie", texte: "Julie a 42 images dans son album. Elle en gagne 19 à la récréation. Combien en a-t-elle au total ?", syll: "Julie a 42 images dans son album. Elle en gagne 19 à la récréation. Combien en a-t-elle au total ?", aPose: true },
-            { id: 5, titre: "Exercice 5 : Les fleurs du jardinier", texte: "Le jardinier a planté 36 tulipes rouges et 25 tulipes jaunes. Combien de fleurs y a-t-il dans le jardin ?", syll: "Le jardinier a 120 fleurs. Il en vend 45 à la vente. Combien en reste-t-il ?", aPose: true },
-            { id: 6, titre: "Exercice 6 : Les passagers du bus", texte: "Dans un bus, il y a 48 passagers. Au premier arrêt, 15 personnes descendent. Combien reste-t-il de passagers ?", syll: "Dans un bus, il y a 48 passagers. Au premier arrêt, 15 personnes descendent. Combien reste-t-il de passagers ?", aPose: true },
+            { id: 1, titre: "Exercice 1 : Les billes de Léo", texte: "Léo a 25 billes. Son ami lui en donne 18 de plus. Combien de billes Léo a-t-il maintenant ?", aPose: true },
+            { id: 2, titre: "Exercice 2 : Les pommes du marchand", texte: "Dans la caisse du marchand, il y a 54 pommes. Il en vend 21 pendant la matinée. Combien en reste-t-il ?", aPose: true },
+            { id: 3, titre: "Exercice 3 : Les gâteaux de Maman", texte: "Maman achète 3 paquets de 10 gâteaux pour le goûter. Combien de gâteaux y a-t-il en tout ?", aPose: true },
+            { id: 4, titre: "Exercice 4 : Les images de Julie", texte: "Julie a 42 images dans son album. Elle en gagne 19 à la récréation. Combien en a-t-elle au total ?", aPose: true },
+            { id: 5, titre: "Exercice 5 : Les fleurs du jardinier", texte: "Le jardinier a planté 36 tulipes rouges et 25 tulipes jaunes. Combien de fleurs y a-t-il dans le jardin ?", aPose: true },
+            { id: 6, titre: "Exercice 6 : Les passagers du bus", texte: "Dans un bus, il y a 48 passagers. Au premier arrêt, 15 personnes descendent. Combien reste-t-il de passagers ?", aPose: true },
         ];
 
         function speak(text) {
@@ -198,10 +178,14 @@
         }
 
         const list = document.getElementById('exercises-list');
-        list.innerHTML = problemes.map(ex => `
+
+        // Generate HTML with the first item (index 0) having the 'active' class
+        list.innerHTML = problemes.map((ex, index) => `
         <div class="exercice-block">
-            <div class="exercice-header" onclick="this.nextElementSibling.classList.toggle('active')">${ex.titre}</div>
-            <div class="exercice-content">
+            <div class="exercice-header" onclick="this.nextElementSibling.classList.toggle('active')">
+                ${ex.titre}
+            </div>
+            <div class="exercice-content ${index === 0 ? 'active' : ''}">
                 <button class="btn-audio" onclick="speak('${ex.texte.replace(/'/g, "\\'")}')">🔊 Écouter l'énoncé</button>
                 <div class="question-container">${ex.texte}</div>
                 <div class="field-group"><label>Calcul :</label><input type="text" class="full-width save-input" data-key="calc-${ex.id}"></div>
@@ -221,20 +205,21 @@
             const container = btn.previousElementSibling.querySelector('.rows-container');
             const rowCount = container.children.length + 1;
             const newRow = container.children[1].cloneNode(true);
-            newRow.querySelectorAll('.save-input').forEach((input, i) => {
-                input.value = "";
+            newRow.querySelectorAll('.save-input, select').forEach((input, i) => {
+                if (input.tagName === "INPUT") input.value = "";
                 input.dataset.key = `grid-${exId}-${rowCount}-${i}`;
             });
             container.appendChild(newRow);
         }
 
-        // SAUVEGARDE AUTO
+        // AUTO-SAVE
         document.addEventListener('input', (e) => {
             if (e.target.classList.contains('save-input')) {
                 localStorage.setItem(e.target.dataset.key, e.target.value);
             }
         });
 
+        // LOAD SAVED DATA
         window.addEventListener('load', () => {
             document.querySelectorAll('.save-input').forEach(input => {
                 const savedValue = localStorage.getItem(input.dataset.key);
